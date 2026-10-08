@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TKBRAND - Millions of files found deep</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Poppins & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandPurple: '#6A38C8',
+                        brandPurpleDark: '#50239A',
+                        brandPurpleLight: '#8B5CF6',
+                        bgGradientStart: '#7933CD',
+                        bgGradientEnd: '#9043E8',
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .hero-bg {
+            background: linear-gradient(135deg, #6c2bd9 0%, #8b31ea 50%, #a24bfa 100%);
+        }
+        .shape-cube {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(4px);
+            border-radius: 12px;
+            transform: rotate(-15deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased selection:bg-purple-200 selection:text-purple-900 min-h-screen flex flex-col">
+
+    <!-- 1. Top Bar -->
+    <div class="bg-[#5622a8] text-purple-200 text-xs py-2 px-4 sm:px-8 border-b border-purple-800/40">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3 text-xs opacity-90 font-medium">
+                <a href="#" class="hover:text-white transition-colors">About Us</a>
+                <span>-</span>
+                <a href="mailto:pctaha913@gmail.com" class="hover:text-white transition-colors">Contact Us</a>
+                <span>-</span>
+                <a href="javascript:void(0)" onclick="openDmcaModal()" class="hover:text-white transition-colors">DMCA / Privacy Policy</a>
+            </div>
+            <div class="flex items-center space-x-3 text-xs">
+                <button onclick="toggleAdminMode()" id="adminToggleBtn" class="bg-purple-900/80 hover:bg-purple-900 text-purple-200 px-3 py-1 rounded-full text-[11px] uppercase font-semibold border border-purple-400/40 transition-all flex items-center space-x-1">
+                    <i class="fa-solid fa-user-gear"></i>
+                    <span id="adminToggleText">Admin Mode: OFF</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero-bg text-white relative overflow-hidden pb-16 lg:pb-24">
+        <div class="shape-cube w-12 h-12 top-28 left-[45%] opacity-70"></div>
+        <div class="shape-cube w-8 h-8 top-16 left-[20%] opacity-50"></div>
+        <div class="shape-cube w-16 h-16 bottom-10 left-[8%] opacity-60"></div>
+        <div class="shape-cube w-20 h-20 bottom-12 right-[18%] opacity-40"></div>
+        <div class="shape-cube w-10 h-10 top-36 right-[8%] opacity-50"></div>
+
+        <!-- Main Navigation Bar -->
+        <nav class="max-w-7xl mx-auto px-4 sm:px-8 py-5 relative z-20 flex items-center justify-between">
+            <a href="#" class="flex items-center space-x-3 group">
+                <div class="w-10 h-10 rounded-xl bg-purple-900/40 border border-purple-300/30 flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform">
+                    <svg class="w-6 h-6 text-purple-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                    </svg>
+                </div>
+                <span class="text-2xl font-bold tracking-tight text-white font-sans">TKBRAND</span>
+            </a>
+
+            <div class="hidden md:flex items-center space-x-8 font-medium text-sm">
+                <a href="#" onclick="filterCategory('All')" class="flex items-center space-x-1.5 text-white hover:text-purple-200 transition-colors">
+                    <i class="fa-solid fa-house text-xs"></i>
+                    <span>Home</span>
+                </a>
+                <a href="#" onclick="filterCategory('Games')" class="text-purple-100 hover:text-white transition-colors">Games</a>
+                <a href="#" onclick="filterCategory('Premium Apps')" class="text-purple-100 hover:text-white transition-colors">Premium Apps</a>
+                <a href="#" onclick="filterCategory('Tools')" class="text-purple-100 hover:text-white transition-colors">Tools</a>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <button id="addApkBtn" onclick="openApkModal()" class="hidden bg-emerald-500 hover:bg-emerald-600 text-white font-semibold text-xs px-4 py-2.5 rounded-xl shadow-lg transition-all flex items-center space-x-2">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Upload APK Mod</span>
+                </button>
+                <button onclick="focusSearch()" class="p-2 hover:bg-white/10 rounded-lg transition-colors text-white text-lg">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Hero Content Section -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-8 pt-10 pb-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-7 space-y-8 text-center lg:text-left">
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-white tracking-normal">
+                        Millions of files found deep in the <br class="hidden sm:inline"/>
+                        <span class="inline-block">TKBRAND 🤯</span>
+                    </h1>
+
+                    <div class="pt-2 max-w-md mx-auto lg:mx-0">
+                        <div class="relative flex items-center">
+                            <input type="text" 
+                                id="heroSearchInput"
+                                onkeyup="handleSearch()"
+                                placeholder="Search apps, games (e.g. GTA, CapCut)..." 
+                                class="w-full bg-white/15 backdrop-blur-md text-white placeholder-purple-200/70 border border-white/20 rounded-2xl py-3.5 pl-5 pr-12 focus:outline-none focus:ring-2 focus:ring-purple-300 transition-all text-sm shadow-lg"
+                            >
+                            <button onclick="handleSearch()" class="absolute right-4 text-purple-200 hover:text-white transition-colors">
+                                <i class="fa-solid fa-magnifying-glass text-base"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 flex flex-col items-center justify-center">
+                    <div class="relative w-64 sm:w-80 group">
+                        <div class="relative z-10 p-4 transition-transform duration-500 hover:scale-105">
+                            <svg viewBox="0 0 500 500" class="w-full h-auto drop-shadow-2xl">
+                                <path d="M 250 100 L 450 200 L 250 300 L 50 200 Z" fill="#3B1578" />
+                                <path d="M 50 200 L 250 300 L 250 360 L 50 260 Z" fill="#280C54" />
+                                <path d="M 250 300 L 450 200 L 450 260 L 250 360 Z" fill="#1C063E" />
+                                <ellipse cx="250" cy="200" rx="130" ry="65" fill="#0F0326" />
+                                <ellipse cx="250" cy="200" rx="110" ry="55" fill="#521CB0" />
+                                <ellipse cx="250" cy="200" rx="80" ry="40" fill="#00D2FF" opacity="0.8" />
+                                <g transform="translate(140, 70)">
+                                    <rect x="0" y="0" width="45" height="55" rx="6" fill="#FFFFFF" opacity="0.9" />
+                                    <line x1="8" y1="15" x2="35" y2="15" stroke="#7933CD" stroke-width="3" stroke-linecap="round"/>
+                                    <line x1="8" y1="25" x2="28" y2="28" stroke="#7933CD" stroke-width="3" stroke-linecap="round"/>
+                                </g>
+                                <g transform="translate(290, 60)">
+                                    <rect x="0" y="0" width="50" height="60" rx="6" fill="#38BDF8" />
+                                    <path d="M 10 20 L 25 35 L 40 20" stroke="white" stroke-width="4" fill="none" stroke-linecap="round" />
+                                </g>
+                                <g transform="translate(200, 20)">
+                                    <rect x="0" y="0" width="40" height="50" rx="6" fill="#A855F7" />
+                                    <circle cx="20" cy="25" r="8" fill="white" />
+                                </g>
+                                <ellipse cx="250" cy="200" rx="160" ry="80" stroke="#A855F7" stroke-width="2" fill="none" stroke-dasharray="10 15" />
+                            </svg>
+                        </div>
+                        <div class="text-center mt-2">
+                            <span class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white font-sans">TKBRAND</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Posts Section -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-8 py-14 flex-1">
+        <div class="text-center max-w-2xl mx-auto mb-10">
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 font-sans tracking-tight">
+                View the Most Recent Posts
+            </h2>
+            <div class="w-72 h-0.5 bg-gray-900 mx-auto my-3 rounded-full"></div>
+            <p class="text-gray-500 text-xs sm:text-sm mt-2">
+                Showing <span id="appCount" class="font-bold text-purple-700">0</span> verified MOD APK downloads.
+            </p>
+        </div>
+
+        <div class="flex flex-wrap justify-center gap-2 mb-8">
+            <button onclick="filterCategory('All')" class="cat-btn active-cat px-4 py-1.5 rounded-full text-xs font-semibold bg-purple-600 text-white shadow-sm transition-all">All</button>
+            <button onclick="filterCategory('Games')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-gray-200 text-gray-700 hover:bg-purple-100 transition-all">Games</button>
+            <button onclick="filterCategory('Premium Apps')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-gray-200 text-gray-700 hover:bg-purple-100 transition-all">Premium Apps</button>
+            <button onclick="filterCategory('Tools')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-gray-200 text-gray-700 hover:bg-purple-100 transition-all">Tools</button>
+        </div>
+
+        <div id="postsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+        <div id="noPostsMsg" class="hidden text-center py-12">
+            <i class="fa-solid fa-folder-open text-5xl text-gray-300 mb-3"></i>
+            <p class="text-gray-500 font-medium">No APK Mods found matching your criteria.</p>
+        </div>
+    </section>
+
+    <!-- DMCA & Copyright Disclaimer Section -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-8 my-10">
+        <div class="bg-gray-900 text-gray-300 p-6 sm:p-8 rounded-3xl border border-gray-800 shadow-xl space-y-4">
+            <div class="flex items-center space-x-3 text-purple-400">
+                <i class="fa-solid fa-shield-halved text-2xl"></i>
+                <h3 class="text-xl font-bold text-white">DMCA & Copyright Disclaimer - TKBRAND</h3>
+            </div>
+            <p class="text-xs sm:text-sm text-gray-400 leading-relaxed">
+                <strong>TKBRAND</strong> is in compliance with 17 U.S.C. § 512 and the Digital Millennium Copyright Act (“DMCA”). It is our policy to respond to any infringement notices and take appropriate actions. All content and files belong to their respective original owners. <strong>TKBRAND does not host any APK files on its own server.</strong> All download links point to third-party services like MediaFire, Mega, or Google Drive.
+            </p>
+            <div class="pt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-t border-gray-800">
+                <span class="text-xs text-gray-400">Copyright issue? Contact us directly: <a href="mailto:pctaha913@gmail.com" class="text-purple-400 underline font-semibold">pctaha913@gmail.com</a></span>
+                <button onclick="openDmcaModal()" class="text-xs bg-purple-600 hover:bg-purple-700 text-white font-medium px-4 py-2 rounded-xl transition-colors">
+                    Read Full DMCA Policy
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Upload/Edit APK Modal -->
+    <div id="apkModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative my-8">
+            <button onclick="closeApkModal()" class="absolute top-5 right-5 text-gray-400 hover:text-gray-600 transition-colors">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+
+            <h3 id="modalTitle" class="text-xl font-bold text-gray-900 mb-1">Upload New APK Mod</h3>
+            <p class="text-xs text-gray-500 mb-6">Fill in the file details below to publish to TKBRAND.</p>
+
+            <form id="apkForm" onsubmit="saveApkPost(event)" class="space-y-4">
+                <input type="hidden" id="editPostId" value="">
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">App Title *</label>
+                    <input type="text" id="postTitle" required placeholder="e.g. GTA San Andreas Mod APK" class="w-full text-sm px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-purple-500 focus:outline-none">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">Category *</label>
+                        <select id="postCategory" class="w-full text-sm px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-purple-500 focus:outline-none bg-white">
+                            <option value="Games">Games</option>
+                            <option value="Premium Apps">Premium Apps</option>
+                            <option value="Tools">Tools</option>
+                            <option value="Productivity">Productivity</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">Version / Tag *</label>
+                        <input type="text" id="postVersion" required placeholder="e.g. v2.4.1 (MOD)" class="w-full text-sm px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-purple-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">File Size *</label>
+                        <input type="text" id="postSize" required placeholder="e.g. 1.8 GB or 45 MB" class="w-full text-sm px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-purple-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">Icon/Banner (Optional)</label>
+                        <input type="url" id="postIcon" placeholder="https://... (Leave blank for default)" class="w-full text-sm px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-purple-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Download URL (MediaFire/Drive/Mega) *</label>
+                    <input type="url" id="postDownloadUrl" required placeholder="https://www.mediafire.com/file/..." class="w-full text-sm px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-purple-500 focus:outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Short Description *</label>
+                    <textarea id="postDesc" rows="3" required placeholder="Describe mod features (e.g., Unlimited Money, VIP Unlocked)..." class="w-full text-sm px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-purple-500 focus:outline-none"></textarea>
+                </div>
+
+                <div class="pt-3 flex justify-end space-x-3">
+                    <button type="button" onclick="closeApkModal()" class="px-5 py-2.5 rounded-xl text-xs font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors">Cancel</button>
+                    <button type="submit" class="px-6 py-2.5 rounded-xl text-xs font-semibold text-white bg-purple-600 hover:bg-purple-700 shadow-md transition-colors">Publish Post</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- DMCA Policy Modal -->
+    <div id="dmcaModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-gray-900 text-gray-200 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative border border-gray-800 my-8">
+            <button onclick="closeDmcaModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white transition-colors">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+
+            <h3 class="text-xl font-bold text-white mb-4 flex items-center space-x-2">
+                <i class="fa-solid fa-gavel text-purple-400"></i>
+                <span>Digital Millennium Copyright Act (DMCA) Policy</span>
+            </h3>
+
+            <div class="space-y-4 text-xs sm:text-sm text-gray-300 leading-relaxed max-h-[60vh] overflow-y-auto pr-2">
+                <p><strong>TKBRAND</strong> respects the intellectual property rights of others and expects its users to do the same. In accordance with the DMCA, we will respond expeditiously to claims of copyright infringement.</p>
+                
+                <h4 class="font-bold text-white text-sm pt-2">Take-Down Request Notice Procedure:</h4>
+                <p>If you are a copyright owner and believe that any content or link on <strong>TKBRAND</strong> infringes upon your copyright, please send us a notice with the following details:</p>
+
+                <ul class="list-disc pl-5 space-y-1.5 text-gray-400">
+                    <li>Proof of authorized representation for the copyright holder.</li>
+                    <li>Specific description and direct URL of the copyrighted material on TKBRAND.</li>
+                    <li>Your full legal name, business contact email address, and physical address.</li>
+                    <li>A statement that you have a good-faith belief that the material is not authorized by the copyright owner.</li>
+                </ul>
+
+                <div class="bg-purple-950/60 border border-purple-800/60 rounded-xl p-4 mt-4">
+                    <p class="text-purple-200 font-semibold">Official Take-Down Contact Email:</p>
+                    <a href="mailto:pctaha913@gmail.com" class="text-purple-400 font-bold hover:underline text-base block mt-1">pctaha913@gmail.com</a>
+                    <p class="text-[11px] text-purple-300/70 mt-1">We typically process and remove reported links within 24 to 48 business hours.</p>
+                </div>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-gray-800 flex justify-end">
+                <button onclick="closeDmcaModal()" class="px-5 py-2 rounded-xl text-xs font-semibold text-white bg-purple-600 hover:bg-purple-700 transition-colors">
+                    Close Policy Notice
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3-STEP DOWNLOAD PROCESS MODAL (MONETIZED WITH ADS) -->
+    <div id="downloadModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative my-8 text-center border border-purple-100">
+            <button onclick="closeDownloadModal()" class="absolute top-5 right-5 text-gray-400 hover:text-gray-600 transition-colors">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+
+            <!-- App Info Banner -->
+            <div class="mb-4 text-left border-b pb-3">
+                <span id="dlCategory" class="text-[10px] font-bold uppercase tracking-wider text-purple-600 bg-purple-100 px-2 py-0.5 rounded-md">APK Mod</span>
+                <h3 id="dlAppTitle" class="text-lg font-bold text-gray-900 mt-1">CapCut Pro MOD APK</h3>
+                <p id="dlAppSize" class="text-xs text-gray-500"><i class="fa-solid fa-hard-drive mr-1"></i> 110 MB</p>
+            </div>
+
+            <!-- AD SPACE TOP -->
+            <div class="my-3 bg-gray-100 border border-dashed border-gray-300 rounded-xl p-3 min-h-[60px] flex items-center justify-center text-xs text-gray-400 font-mono">
+                [ ADVERTISEMENT SPACE - TOP ]
+            </div>
+
+            <!-- STEP 1: TIMER PAGE -->
+            <div id="step1View" class="space-y-4 py-2">
+                <div class="inline-flex items-center justify-center w-12 h-12 bg-purple-100 rounded-full text-purple-600 mb-1">
+                    <i class="fa-solid fa-clock text-xl"></i>
+                </div>
+                <h4 class="font-bold text-gray-800 text-base">Step 1: Generating Link</h4>
+                <p class="text-xs text-gray-500">Please wait a few seconds while we prepare your secure download file.</p>
+                
+                <div class="py-2">
+                    <span id="timerText" class="text-3xl font-extrabold text-purple-600">10</span>
+                    <span class="text-xs text-gray-400 block mt-1">seconds remaining</span>
+                </div>
+
+                <button id="step1Btn" disabled onclick="goToStep2()" class="w-full py-3 rounded-xl text-xs font-bold text-white bg-gray-300 cursor-not-allowed transition-all shadow-md">
+                    Please Wait...
+                </button>
+            </div>
+
+            <!-- STEP 2: VERIFICATION PAGE -->
+            <div id="step2View" class="hidden space-y-4 py-2">
+                <div class="inline-flex items-center justify-center w-12 h-12 bg-amber-100 rounded-full text-amber-600 mb-1">
+                    <i class="fa-solid fa-shield-check text-xl"></i>
+                </div>
+                <h4 class="font-bold text-gray-800 text-base">Step 2: Security Verification</h4>
+                <p class="text-xs text-gray-500">Click below to verify you are a human and proceed to the download page.</p>
+
+                <div class="bg-purple-50 border border-purple-100 p-3 rounded-xl text-xs text-purple-800 text-left space-y-1">
+                    <p class="font-semibold"><i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i> File scanned for viruses</p>
+                    <p class="font-semibold"><i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i> Fast high-speed server ready</p>
+                </div>
+
+                <button onclick="goToStep3()" class="w-full py-3 rounded-xl text-xs font-bold text-white bg-amber-500 hover:bg-amber-600 transition-all shadow-md flex items-center justify-center space-x-2">
+                    <span>Verify & Continue</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- STEP 3: FINAL DOWNLOAD GATEWAY -->
+            <div id="step3View" class="hidden space-y-4 py-2">
+                <div class="inline-flex items-center justify-center w-12 h-12 bg-emerald-100 rounded-full text-emerald-600 mb-1">
+                    <i class="fa-solid fa-circle-down text-2xl"></i>
+                </div>
+                <h4 class="font-bold text-gray-800 text-base">Step 3: Ready to Download</h4>
+                <p class="text-xs text-gray-500">Your link is unlocked! Click below to start your download.</p>
+
+                <a id="finalDownloadBtn" href="#" target="_blank" onclick="closeDownloadModal()" class="w-full py-3 rounded-xl text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 transition-all shadow-lg flex items-center justify-center space-x-2 block">
+                    <i class="fa-solid fa-download"></i>
+                    <span>Download Now</span>
+                </a>
+            </div>
+
+            <!-- AD SPACE BOTTOM -->
+            <div class="mt-4 bg-gray-100 border border-dashed border-gray-300 rounded-xl p-3 min-h-[60px] flex items-center justify-center text-xs text-gray-400 font-mono">
+                [ ADVERTISEMENT SPACE - BOTTOM ]
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-10 border-t border-gray-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-xs">
+            <div class="flex items-center space-x-2">
+                <span class="font-bold text-white text-base">TKBRAND</span>
+                <span>&copy; 2026. All rights reserved.</span>
+            </div>
+            <div class="flex space-x-6 text-gray-400">
+                <a href="#" class="hover:text-white transition-colors">Home</a>
+                <a href="mailto:pctaha913@gmail.com" class="hover:text-white transition-colors">Contact Us</a>
+                <a href="javascript:void(0)" onclick="openDmcaModal()" class="hover:text-white transition-colors">DMCA Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const initialPosts = [
+            {
+                id: '1',
+                title: 'GTA San Andreas Mod APK',
+                category: 'Games',
+                version: 'v2.4.1 (MOD)',
+                size: '1.78 GB',
+                downloadUrl: 'https://www.mediafire.com',
+                icon: '',
+                desc: 'Unlimited Money, Cleo Menu unlocked, high graphics edition for Android.',
+                date: 'Today'
+            },
+            {
+                id: '2',
+                title: 'CapCut Pro MOD APK',
+                category: 'Premium Apps',
+                version: 'PRO Unlocked',
+                size: '98 MB',
+                downloadUrl: 'https://mega.nz',
+                icon: '',
+                desc: 'No watermark, premium effects unlocked, 4K export support for mobile editor.',
+                date: 'Yesterday'
+            },
+            {
+                id: '3',
+                title: 'ExpressVPN Premium Mod',
+                category: 'Tools',
+                version: 'VIP Premium',
+                size: '42 MB',
+                downloadUrl: 'https://drive.google.com',
+                icon: '',
+                desc: 'Unlimited high-speed servers, lifetime activation, zero logs guaranteed.',
+                date: '2 days ago'
+            }
+        ];
+
+        let posts = [];
+        let isAdmin = false;
+        let currentCategory = 'All';
+
+        // Timer & Modal variables
+        let activeDownloadUrl = '';
+        let timerInterval = null;
+        let countdown = 10;
+
+        window.onload = function() {
+            const saved = localStorage.getItem('tkbrand_apk_posts');
+            if (saved) {
+                try {
+                    posts = JSON.parse(saved);
+                } catch(e) {
+                    posts = initialPosts;
+                }
+            } else {
+                posts = initialPosts;
+                savePostsToStorage();
+            }
+            renderPosts();
+        };
+
+        function savePostsToStorage() {
+            localStorage.setItem('tkbrand_apk_posts', JSON.stringify(posts));
+        }
+
+        function toggleAdminMode() {
+            isAdmin = !isAdmin;
+            const btnText = document.getElementById('adminToggleText');
+            const addBtn = document.getElementById('addApkBtn');
+            const btn = document.getElementById('adminToggleBtn');
+
+            if (isAdmin) {
+                btnText.textContent = "Admin Mode: ON";
+                btn.classList.replace('bg-purple-900/80', 'bg-emerald-600');
+                addBtn.classList.remove('hidden');
+            } else {
+                btnText.textContent = "Admin Mode: OFF";
+                btn.classList.replace('bg-emerald-600', 'bg-purple-900/80');
+                addBtn.classList.add('hidden');
+            }
+            renderPosts();
+        }
+
+        function renderPosts() {
+            const container = document.getElementById('postsContainer');
+            const noPosts = document.getElementById('noPostsMsg');
+            const appCount = document.getElementById('appCount');
+            const searchQuery = document.getElementById('heroSearchInput').value.toLowerCase();
+
+            container.innerHTML = '';
+
+            const filtered = posts.filter(post => {
+                const matchesCat = (currentCategory === 'All') || (post.category === currentCategory);
+                const matchesSearch = post.title.toLowerCase().includes(searchQuery) || 
+                                      post.desc.toLowerCase().includes(searchQuery) ||
+                                      post.category.toLowerCase().includes(searchQuery);
+                return matchesCat && matchesSearch;
+            });
+
+            appCount.textContent = filtered.length;
+
+            if (filtered.length === 0) {
+                noPosts.classList.remove('hidden');
+            } else {
+                noPosts.classList.add('hidden');
+                filtered.forEach(post => {
+                    container.innerHTML += createCardHtml(post);
+                });
+            }
+        }
+
+        function getCategoryGradient(category) {
+            switch(category) {
+                case 'Games': return 'from-purple-500 to-indigo-600';
+                case 'Premium Apps': return 'from-pink-500 to-rose-600';
+                case 'Tools': return 'from-blue-500 to-cyan-600';
+                default: return 'from-emerald-500 to-teal-600';
+            }
+        }
+
+        function getCategoryIcon(category) {
+            switch(category) {
+                case 'Games': return 'fa-gamepad';
+                case 'Premium Apps': return 'fa-photo-film';
+                case 'Tools': return 'fa-shield-halved';
+                default: return 'fa-mobile-screen-button';
+            }
+        }
+
+        function createCardHtml(post) {
+            const grad = getCategoryGradient(post.category);
+            const catIcon = getCategoryIcon(post.category);
+
+            const adminControls = isAdmin ? `
+                <div class="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between text-xs">
+                    <button onclick="editPost('${post.id}')" class="text-blue-600 hover:text-blue-800 font-semibold flex items-center space-x-1">
+                        <i class="fa-solid fa-pen-to-square"></i> <span>Edit</span>
+                    </button>
+                    <button onclick="deletePost('${post.id}')" class="text-rose-600 hover:text-rose-800 font-semibold flex items-center space-x-1">
+                        <i class="fa-solid fa-trash"></i> <span>Delete</span>
+                    </button>
+                </div>
+            ` : '';
+
+            const bannerBg = post.icon ? 
+                `<img src="${post.icon}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://placehold.co/400x200/7933CD/FFF?text=${encodeURIComponent(post.title)}'">` :
+                `<i class="fa-solid ${catIcon} text-6xl text-white/30 group-hover:scale-110 transition-transform duration-300"></i>`;
+
+            return `
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col group">
+                    <div class="relative h-48 bg-gradient-to-tr ${grad} overflow-hidden flex items-center justify-center">
+                        ${bannerBg}
+                        <span class="absolute top-3 left-3 bg-purple-900/80 backdrop-blur-md text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg uppercase">${post.category}</span>
+                        <span class="absolute bottom-3 right-3 bg-green-500 text-white text-xs font-bold px-2 py-0.5 rounded">${post.version}</span>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <h3 class="font-bold text-gray-900 text-lg hover:text-purple-600 transition-colors line-clamp-1">
+                                ${post.title}
+                            </h3>
+                            <p class="text-gray-500 text-xs mt-2 line-clamp-2">
+                                ${post.desc}
+                            </p>
+                        </div>
+                        <div>
+                            <div class="pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+                                <span><i class="fa-solid fa-hard-drive mr-1"></i> ${post.size || 'APK'}</span>
+                                <button onclick="startDownloadProcess('${post.id}')" class="bg-purple-600 hover:bg-purple-700 text-white font-medium px-4 py-2 rounded-xl transition-colors flex items-center space-x-1.5 shadow-sm">
+                                    <i class="fa-solid fa-download"></i>
+                                    <span>Download</span>
+                                </button>
+                            </div>
+                            ${adminControls}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function filterCategory(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                if(btn.textContent.trim() === cat) {
+                    btn.className = 'cat-btn active-cat px-4 py-1.5 rounded-full text-xs font-semibold bg-purple-600 text-white shadow-sm transition-all';
+                } else {
+                    btn.className = 'cat-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-gray-200 text-gray-700 hover:bg-purple-100 transition-all';
+                }
+            });
+            renderPosts();
+        }
+
+        function handleSearch() {
+            renderPosts();
+        }
+
+        function focusSearch() {
+            const input = document.getElementById('heroSearchInput');
+            input.focus();
+            input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        /* --- 3-STEP DOWNLOAD PROCESS SYSTEM --- */
+        function startDownloadProcess(id) {
+            const post = posts.find(p => p.id === id);
+            if (!post) return;
+
+            activeDownloadUrl = post.downloadUrl;
+            document.getElementById('dlAppTitle').textContent = post.title;
+            document.getElementById('dlCategory').textContent = post.category;
+            document.getElementById('dlAppSize').innerHTML = `<i class="fa-solid fa-hard-drive mr-1"></i> ${post.size || 'APK'}`;
+            document.getElementById('finalDownloadBtn').href = activeDownloadUrl;
+
+            // Reset step views
+            document.getElementById('step1View').classList.remove('hidden');
+            document.getElementById('step2View').classList.add('hidden');
+            document.getElementById('step3View').classList.add('hidden');
+
+            const step1Btn = document.getElementById('step1Btn');
+            step1Btn.disabled = true;
+            step1Btn.textContent = 'Please Wait...';
+            step1Btn.className = 'w-full py-3 rounded-xl text-xs font-bold text-white bg-gray-300 cursor-not-allowed transition-all shadow-md';
+
+            countdown = 10;
+            document.getElementById('timerText').textContent = countdown;
+
+            document.getElementById('downloadModal').classList.remove('hidden');
+
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                countdown--;
+                document.getElementById('timerText').textContent = countdown;
+                if (countdown <= 0) {
+                    clearInterval(timerInterval);
+                    step1Btn.disabled = false;
+                    step1Btn.textContent = 'Continue to Step 2';
+                    step1Btn.className = 'w-full py-3 rounded-xl text-xs font-bold text-white bg-purple-600 hover:bg-purple-700 cursor-pointer transition-all shadow-md';
+                }
+            }, 1000);
+        }
+
+        function goToStep2() {
+            document.getElementById('step1View').classList.add('hidden');
+            document.getElementById('step2View').classList.remove('hidden');
+        }
+
+        function goToStep3() {
+            document.getElementById('step2View').classList.add('hidden');
+            document.getElementById('step3View').classList.remove('hidden');
+        }
+
+        function closeDownloadModal() {
+            clearInterval(timerInterval);
+            document.getElementById('downloadModal').classList.add('hidden');
+        }
+
+        /* --- APK MODAL MANAGEMENT & SAVING --- */
+        function openApkModal() {
+            document.getElementById('apkForm').reset();
+            document.getElementById('editPostId').value = '';
+            document.getElementById('modalTitle').textContent = 'Upload New APK Mod';
+            document.getElementById('apkModal').classList.remove('hidden');
+        }
+
+        function closeApkModal() {
+            document.getElementById('apkModal').classList.add('hidden');
+        }
+
+        function saveApkPost(e) {
+            e.preventDefault();
+            const editId = document.getElementById('editPostId').value;
+            const title = document.getElementById('postTitle').value;
+            const category = document.getElementById('postCategory').value;
+            const version = document.getElementById('postVersion').value;
+            const size = document.getElementById('postSize').value;
+            const downloadUrl = document.getElementById('postDownloadUrl').value;
+            const icon = document.getElementById('postIcon').value;
+            const desc = document.getElementById('postDesc').value;
+
+            if (editId) {
+                const index = posts.findIndex(p => p.id === editId);
+                if (index !== -1) {
+                    posts[index] = { ...posts[index], title, category, version, size, downloadUrl, icon, desc };
+                }
+            } else {
+                const newPost = {
+                    id: Date.now().toString(),
+                    title,
+                    category,
+                    version,
+                    size,
+                    downloadUrl,
+                    icon,
+                    desc,
+                    date: 'Just now'
+                };
+                posts.unshift(newPost);
+            }
+
+            savePostsToStorage();
+            renderPosts();
+            closeApkModal();
+        }
+
+        function editPost(id) {
+            const post = posts.find(p => p.id === id);
+            if (!post) return;
+
+            document.getElementById('editPostId').value = post.id;
+            document.getElementById('postTitle').value = post.title;
+            document.getElementById('postCategory').value = post.category;
+            document.getElementById('postVersion').value = post.version;
+            document.getElementById('postSize').value = post.size || '';
+            document.getElementById('postDownloadUrl').value = post.downloadUrl;
+            document.getElementById('postIcon').value = post.icon || '';
+            document.getElementById('postDesc').value = post.desc;
+
+            document.getElementById('modalTitle').textContent = 'Edit APK Mod';
+            document.getElementById('apkModal').classList.remove('hidden');
+        }
+
+        function deletePost(id) {
+            if (confirm("Are you sure you want to delete this post?")) {
+                posts = posts.filter(p => p.id !== id);
+                savePostsToStorage();
+                renderPosts();
+            }
+        }
+
+        /* --- DMCA MODAL --- */
+        function openDmcaModal() {
+            document.getElementById('dmcaModal').classList.remove('hidden');
+        }
+
+        function closeDmcaModal() {
+            document.getElementById('dmcaModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
